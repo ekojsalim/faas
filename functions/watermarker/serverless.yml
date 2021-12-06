@@ -1,0 +1,29 @@
+service: watermarker
+
+frameworkVersion: "2 || 3"
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: 20201221
+  region: ap-southeast-1
+
+functions:
+  screenshotter:
+    handler: handler.watermarker
+    events:
+      - http:
+          path: /watermark
+          method: get
+          contentHandling: CONVERT_TO_BINARY
+    memorySize: 1536
+    timeout: 30
+
+plugins:
+  - serverless-offline
+  - serverless-apigw-binary
+
+custom:
+  apigwBinary:
+    types:
+      - "*/*"
